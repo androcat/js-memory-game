@@ -1,62 +1,43 @@
 body {
-  background-color: bisque;
-  text-align: center;
-}
-
-.container {
-  background-color: aquamarine;
-
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /*Breaks out into 4 even columns*/
-  grid-gap: 10px;
-}
-
-.card {
-  padding: 20px;
-
-  background-color: red;
-  overflow: hidden;
-  /* margin: 5px; */
-  width: 20%;
-  border-radius: 5%;
+  background-color: rgb(255, 228, 196);
 }
 
 img {
   width: 100%;
 }
 
-/* Mady's CSS */
-img {
-  width: 100%; /*Only this, style rest elsewhere*/
+.container {
+  width: 80vw;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
 }
 
 .card {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-  /*enables the 3d transform*/
+  /* enable 3D transforms */
   transform-style: preserve-3d;
-  transition: transform 0.3s; /*that transition will happen in x amount of time*/
+  transition: transform 0.5s;
 }
 
-/*LOOK THIS UP*/
 .card__face {
-  backface-visibility: hidden; /*when it rotates shows both sides as moving*/
+  backface-visibility: hidden;
 }
 
-.card__face--front {
-  transform: rotateY(180deg);
-}
-
-.card__face--front,
-.card__face--back {
+.card .card__face--front {
+  transform: rotateY(-180deg);
   grid-row: 1 / span 1;
   grid-column: 1 / span 1;
 }
 
-/*has to have both these classes on it
-    Also, here you are flipping the parent, and here's where the 
-*/
+.card .card__face--back {
+  grid-row: 1 / span 1;
+  grid-column: 1 / span 1;
+}
+
 .card.flip {
   transform: rotateY(180deg);
 }
@@ -67,4 +48,8 @@ img {
 
 .card.flip .card__face--front {
   transform: rotateY(180deg);
+}
+
+.match img {
+  opacity: 0.5;
 }

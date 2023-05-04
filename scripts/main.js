@@ -1,7 +1,6 @@
 (function () {
   "use strict";
-  //an array of objects
-  // change to let !!!!!!!!!! makes it easier
+
   let flippedCards = [];
   let matchedCards = [];
 
@@ -32,24 +31,21 @@
     },
   ];
 
-  // Did i fat arrow this correctly ? -> Yes
   function shuffleCards(arrOfCards) {
-    arrOfCards.sort(() => Math.random() - 0.5); // lazy sorting method
+    arrOfCards.sort(() => Math.random() - 0.5);
   }
 
   function generateCardsHTML(deck) {
     let html = "";
-    // NOTE: forEach gives element first then index and more
     deck.forEach(
       (e) =>
-        // card__face is added by Mady
         (html += `
         <div class="card" data-name="${e.text}">
-            <div class="card__face card-front"> 
+            <div class="card__face card__face--front"> 
               <img src="${e.url}" alt="${e.text}" />
             </div>      
 
-            <div class="card__face card-back">
+            <div class="card__face card__face--back">
                 <img src="https://octodex.github.com/images/boxertocat_octodex.jpg" alt="Boxertocat" />
             </div>
         </div>
@@ -59,19 +55,24 @@
   }
 
   function unflipCards() {
+    console.log("this fires");
+
     flippedCards.forEach((card) => {
+      console.log("this fires1");
       setTimeout(function () {
-        card.classList.remove("flip"); // Takes off flipping mechanism
-      }, 2000);
-      flippedCards = []; // NEED TO TAKE OUT EVEN IF NOT MATCH FOR FUTURE USE
+        card.classList.remove("flip");
+        flippedCards = [];
+      }, 1000);
     });
   }
 
   function removeCards() {
     flippedCards.forEach((card) => {
       card.removeEventListener("click", flipCard);
-      card.classList.add("match");
       matchedCards.push(card);
+      setTimeout(() => {
+        card.classList.add("match");
+      }, 50);
     });
     flippedCards = [];
     if (matchedCards.length === 12) {
@@ -80,29 +81,22 @@
   }
 
   function checkForMatch() {
-    if (flippedCards[1] === flippedCards[0]) {
+    console.log(flippedCards[1]);
+    if (flippedCards[1].dataset.name === flippedCards[0].dataset.name) {
       console.log("You got a match!");
-      // matchedCards.push(flippedCards[0].dataset.name); //moved into remove cards
-      flippedCards = [];
-
       removeCards();
+      flippedCards = [];
     } else {
       unflipCards();
     }
-    if (matchedCards.length === 6) {
+    if (matchedCards.length === 12) {
       alert("You win!");
     }
     console.log("Cards matched", matchedCards);
   }
-  // P NOTE: cannot think anymore and something is wrong with the order of my logic
-  function flipCard() {
-    event.currentTarget.classList.add("flip"); //adds flip class so css and do its thaaang B^)
-
-    // console.log(event.currentTarget); //html that we insert
-    // console.log(event.currentTarget.dataset.name);
-    // Q: Why does it only fire after clicking the 3rd card ???????
-    // A: Logic was sound, it was the event listener for click that was missing *facepalm*
-    flippedCards.push(event.currentTarget); //The push needs to happen regardless
+  function flipCard(event) {
+    event.currentTarget.classList.add("flip");
+    flippedCards.push(event.currentTarget);
     if (flippedCards.length === 2) {
       console.log("You have flipped 2 cards");
       checkForMatch();
@@ -113,22 +107,14 @@
 
   function play() {
     const deck = [...cards, ...cards];
-    shuffleCards(deck); // CAUTION: THIS MUTATES THE ORIGINAL DECK ARRAY !!!
+    shuffleCards(deck);
 
     const htmlContainer = document.querySelector(".container");
     const cardsHTML = generateCardsHTML(deck);
-    htmlContainer.innerHTML = ""; // TO clear out the cards if playing again button is pressed
-    htmlContainer.insertAdjacentHTML("afterbegin", cardsHTML); // inserts the actual, visible cards into the container div
+    htmlContainer.innerHTML = "";
+    htmlContainer.insertAdjacentHTML("afterbegin", cardsHTML);
 
     const cardNodes = document.querySelectorAll(".card");
-    //console.log(cardNodes);
-    // for (let i = 0; i < cardNodes.length; i++) {
-    //   cardNodes[i].addEventListener("click", function () {
-    //     //console.dir(cardNodes[i]);
-    //     console.log(cardNodes[i].dataset.name); // this is how to get the card ref, use in if else
-    //     flipCard();
-    //   });
-    // }
 
     document.querySelectorAll(".card").forEach(function (card) {
       card.addEventListener("click", flipCard);
