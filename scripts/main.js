@@ -62,14 +62,15 @@
     console.log("You flipped a card");
     event.currentTarget.classList.add("flip"); //adds
 
-    console.log(event.currentTarget); //html that we insert
-    console.log(event.currentTarget.dataset.name);
+    // console.log(event.currentTarget); //html that we insert
+    // console.log(event.currentTarget.dataset.name);
 
-    flippedCards.push(event.currentTarget.dataset.name);
     if (flippedCards.length === 2) {
       checkForMatch();
+      flippedCards = [];
+    } else {
+      flippedCards.push(event.currentTarget.dataset.name);
     }
-    console.log();
   }
 
   function play() {
