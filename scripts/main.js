@@ -56,21 +56,31 @@
     return html;
   }
 
-  function checkForMatch() {}
-
+  function checkForMatch() {
+    if (flippedCards[1] === flippedCards[0]) {
+      console.log("You got a match!");
+      matchedCards.push(flippedCards[0].dataset.name);
+      flippedCards.length = 0;
+    }
+    if (matchedCards.length === 6) {
+      alert("You win!");
+    }
+    console.log("Cards matched", matchedCards);
+  }
+  // P NOTE: cannot think anymore and something is wrong with the order of my logic
   function flipCard() {
-    console.log("You flipped a card");
     event.currentTarget.classList.add("flip"); //adds
 
     // console.log(event.currentTarget); //html that we insert
     // console.log(event.currentTarget.dataset.name);
-
+    // Q: Why does it only fire after clicking the 3rd card ???????
     if (flippedCards.length === 2) {
+      console.log("You have flipped 2 cards");
       checkForMatch();
-      flippedCards = [];
     } else {
-      flippedCards.push(event.currentTarget.dataset.name);
+      flippedCards.push(event.currentTarget);
     }
+    console.log("Flipped cards", flippedCards);
   }
 
   function play() {
